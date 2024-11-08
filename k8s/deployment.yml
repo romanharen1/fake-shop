@@ -77,6 +77,6 @@ spec:
   selector:
     app: fakeshop
   ports:
-    - port: 80
+    - port: 8080
       targetPort: 5000
   type: NodePort
