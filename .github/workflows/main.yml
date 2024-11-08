@@ -52,14 +52,19 @@ jobs:
           # Configure OCI CLI using GitHub Secrets
           mkdir -p ~/.oci
           touch ~/.oci/key.pem
-          echo "${{ secrets.OCI_API_KEY }}" > ~/.oci/key.pem
+          echo "-----BEGIN PRIVATE KEY-----" > ~/.oci/key.pem
+          echo "${{ secrets.OCI_API_KEY }}" >> ~/.oci/key.pem
+          echo "-----END PRIVATE KEY-----" >> ~/.oci/key.pem
           echo "[DEFAULT]" > ~/.oci/config
           echo "user=${{ secrets.OCI_USER_OCID }}" >> ~/.oci/config
           echo "fingerprint=${{ secrets.OCI_FINGERPRINT }}" >> ~/.oci/config
           echo "key_file=~/.oci/key.pem" >> ~/.oci/config
           echo "tenancy=${{ secrets.OCI_TENANCY_OCID }}" >> ~/.oci/config
           echo "region=${{ secrets.OCI_REGION }}" >> ~/.oci/config
-  
+      - name: Fix permissions
+        run: |
+          oci setup repair-file-permissions --file /home/runner/.oci/config 
+          oci setup repair-file-permissions --file /home/runner/.oci/key.pem
       - name: Fetch Kubernetes config from Oracle Cloud
         run: |
           # Get the kubeconfig for the OKE cluster
