@@ -61,6 +61,7 @@ jobs:
       - name: Fetch Kubernetes config from Oracle Cloud
         run: |
           # Get the kubeconfig for the OKE cluster
+          echo $OCI_REGION
           oci ce cluster create-kubeconfig --cluster-id $(oci ce cluster list --compartment-id $OCI_TENANCY_OCID --query "data[?\"name\"=='$OCI_KUBERNETES_CLUSTER_NAME'].id" --raw-output) --file $HOME/.kube/config --region $OCI_REGION
   
       - name: Set up kubectl
