@@ -51,7 +51,7 @@ jobs:
         run: |
           # Configure OCI CLI using GitHub Secrets
           mkdir -p ~/.oci
-          touch 
+          touch ~/.oci/key.pem
           echo "[DEFAULT]" > ~/.oci/config
           echo "user=${{ secrets.CI_USER_OCID }}" >> ~/.oci/config
           echo "fingerprint=${{ secrets.OCI_FINGERPRINT }} >> ~/.oci/config
