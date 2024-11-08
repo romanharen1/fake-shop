@@ -52,17 +52,16 @@ jobs:
           # Configure OCI CLI using GitHub Secrets
           mkdir -p ~/.oci
           echo "[DEFAULT]" > ~/.oci/config
-          echo "user=$OCI_USER_OCID" >> ~/.oci/config
-          echo "fingerprint=$(oci os keys list --user-id $OCI_USER_OCID --query 'data[0].fingerprint' --raw-output)" >> ~/.oci/config
-          echo "key_file=$OCI_API_KEY" >> ~/.oci/config
-          echo "tenancy=$OCI_TENANCY_OCID" >> ~/.oci/config
-          echo "region=$OCI_REGION" >> ~/.oci/config
+          echo "user=${{ secrets.CI_USER_OCID }}" >> ~/.oci/config
+          echo "fingerprint=$(oci os keys list --user-id ${{ secrets.OCI_USER_OCID }} --query 'data[0].fingerprint' --raw-output)" >> ~/.oci/config
+          echo "key_file=${{ secrets.OCI_API_KEY }}" >> ~/.oci/config
+          echo "tenancy=${{ secrets.OCI_TENANCY_OCID }}" >> ~/.oci/config
+          echo "region=${{ secrets.OCI_REGION }}" >> ~/.oci/config
   
       - name: Fetch Kubernetes config from Oracle Cloud
         run: |
           # Get the kubeconfig for the OKE cluster
-          echo $OCI_REGION
-          oci ce cluster create-kubeconfig --cluster-id $(oci ce cluster list --compartment-id $OCI_TENANCY_OCID --query "data[?\"name\"=='$OCI_KUBERNETES_CLUSTER_NAME'].id" --raw-output) --file $HOME/.kube/config --region $OCI_REGION
+          oci ce cluster create-kubeconfig --cluster-id ${{ secrets.OCI_CLUSTER_ID }} --file $HOME/.kube/config --region ${{ secrets.OCI_REGION }}
   
       - name: Set up kubectl
         uses: azure/setup-kubectl@v1
