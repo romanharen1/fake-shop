@@ -53,7 +53,7 @@ jobs:
           mkdir -p ~/.oci
           touch ~/.oci/key.pem
           echo "[DEFAULT]" > ~/.oci/config
-          echo "user=${{ secrets.CI_USER_OCID }}" >> ~/.oci/config
+          echo "user=${{ secrets.OCI_USER_OCID }}" >> ~/.oci/config
           echo "fingerprint=${{ secrets.OCI_FINGERPRINT }} >> ~/.oci/config
           echo "key_file=${{ secrets.OCI_API_KEY }}" >> ~/.oci/config
           echo "tenancy=${{ secrets.OCI_TENANCY_OCID }}" >> ~/.oci/config
